@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Wizard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container mt-5 mb-5">
+        <div class="card shadow-lg wizard-card">
+            <div class="card-body">
+                
+                <!-- Header -->
+                <h1 class="mb-4 text-center">User Registration Wizard</h1>
+
+                <!-- Progress Bar -->
+                <div class="progress mb-4" style="height: 8px;">
+                    <div class="progress-bar progress-bar-animated" id="progressBar" style="width: 0%; background-color: #28a745;"></div>
+                </div>
+
+                <!-- Step Counter -->
+                <p class="text-center text-muted mb-4">
+                    <span id="stepCounter">Step 1</span> of <span id="totalSteps">7</span>
+                </p>
+
+                <!-- ========== STEP 1: ACCOUNT INFORMATION ========== -->
+                <div id="step-account" class="wizard-step">
+                    <h3 class="mb-4">Account Information</h3>
+                    
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="username" class="form-label">Username</label>
+                        <input type="text" class="form-control" id="username" placeholder="Choose a username" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="password-step1" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password-step1" placeholder="At least 8 characters" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="confirm-password-step1" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirm-password-step1" placeholder="Confirm your password" required>
+                    </div>
+                </div>
+
+                <!-- ========== STEP 2: PERSONAL DETAILS ========== -->
+                <div id="step-personal" class="wizard-step d-none">
+                    <h3 class="mb-4">Personal Details</h3>
+
+                    <div class="mb-3">
+                        <label for="full-name" class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="full-name" placeholder="John Doe" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="dob" class="form-label">Date of Birth</label>
+                        <input type="date" class="form-control" id="dob" required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="gender" class="form-label">Gender</label>
+                        <select class="form-select" id="gender" required>
+                            <option value="">-- Select --</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Select Your State</label>
+                        <p class="text-muted small">Click on a state to select it</p>
+                        <div id="map-container">
+                            <svg id="us-map" viewBox="0 0 960 600" width="100%" height="400">
+                                <!-- state paths for US -->
+                                <g id="states">
+                                    <path id="CA" d="M50,150 L70,200 L60,250 L40,240 L30,200 Z" class="state-path" data-state-name="California"/>
+                                    <path id="TX" d="M300,350 L350,360 L340,400 L290,390 Z" class="state-path" data-state-name="Texas"/>
+                                    <path id="FL" d="M700,420 L720,450 L710,500 L690,480 Z" class="state-path" data-state-name="Florida"/>
+                                    <path id="NY" d="M800,100 L820,120 L810,160 L790,150 Z" class="state-path" data-state-name="New York"/>
+                                    <path id="IL" d="M550,200 L570,210 L560,250 L540,240 Z" class="state-path" data-state-name="Illinois"/>
+                                    <path id="PA" d="M750,180 L770,190 L760,230 L740,220 Z" class="state-path" data-state-name="Pennsylvania"/>
+                                    <path id="OH" d="M650,180 L670,190 L660,230 L640,220 Z" class="state-path" data-state-name="Ohio"/>
+                                    <path id="GA" d="M680,300 L700,310 L690,350 L670,340 Z" class="state-path" data-state-name="Georgia"/>
+                                    <path id="NC" d="M700,250 L720,260 L710,300 L690,290 Z" class="state-path" data-state-name="North Carolina"/>
+                                    <path id="AZ" d="M100,250 L130,260 L120,300 L90,290 Z" class="state-path" data-state-name="Arizona"/>
+                                    <path id="CO" d="M150,180 L180,190 L170,230 L140,220 Z" class="state-path" data-state-name="Colorado"/>
+                                    <path id="WA" d="M30,50 L60,60 L50,100 L20,90 Z" class="state-path" data-state-name="Washington"/>
+                                </g>
+                            </svg>
+                        </div>
+                        <p class="mt-3"><strong>Selected State:</strong> <span id="selected-state-text">None</span></p>
+                    </div>
+                </div>
+
+                <!-- ========== STEP 3: VERIFICATION ========== -->
+                <div id="step-verification" class="wizard-step d-none">
+                    <h3 class="mb-4">Email Verification</h3>
+                    
+                    <p class="mb-4">Verification code is sent to your email. Enter it below to continue.</p>
+
+                    <div class="mb-3">
+                        <label for="otp" class="form-label">Verification Code</label>
+                        <input type="text" class="form-control form-control-lg text-center" id="otp" placeholder="000000" maxlength="6" required>
+                    </div>
+
+                    <div class="alert alert-info" role="alert">
+                        <small>For this demo, please enter any 6-digit code. Example: <strong>123456</strong></small>
+                    </div>
+                </div>
+
+                <!-- ========== STEP 4: BUSINESS DETAILS ========== -->
+                <div id="step-business" class="wizard-step d-none">
+                    <h3 class="mb-4">Business Details</h3>
+
+                    <div class="mb-3">
+                        <label for="company-name" class="form-label">Company Name</label>
+                        <input type="text" class="form-control" id="company-name" placeholder="Your Company Inc." required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="company-size" class="form-label">Company Size</label>
+                        <select class="form-select" id="company-size" required>
+                            <option value="">-- Select --</option>
+                            <option value="1-10">1 - 10 employees</option>
+                            <option value="11-50">11 - 50 employees</option>
+                            <option value="51+">51+ employees</option>
+                        </select>
+                    </div>
+
+                    <!-- Conditional Field: Show only if company size is "51+" -->
+                    <div id="conditional-ops-team" class="mb-3 d-none">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="has-ops-team">
+                            <label class="form-check-label" for="has-ops-team">
+                                Does your company have a dedicated operations team?
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ========== STEP 5: SECURITY & PASSWORD ========== -->
+                <div id="step-security" class="wizard-step d-none">
+                    <h3 class="mb-4">Security & Password</h3>
+
+                    <div class="mb-3">
+                        <label for="password-step5" class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password-step5" placeholder="At least 8 characters" required>
+                        <small class="form-text text-muted">Password strength: <span id="strength-text">--</span></small>
+                        <div class="strength-bar mt-2">
+                            <div id="strength-meter" class="strength-meter"></div>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="confirm-password-step5" class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="confirm-password-step5" placeholder="Confirm your password" required>
+                    </div>
+
+                    <div class="alert alert-info" role="alert">
+                        <small><strong>Password Requirements:</strong> At least 8 characters, 1 uppercase, and 1 number for "Strong" rating.</small>
+                    </div>
+                </div>
+
+                <!-- ========== STEP 6: PREFERENCES ========== -->
+                <div id="step-preferences" class="wizard-step d-none">
+                    <h3 class="mb-4">Communication Preferences</h3>
+
+                    <p class="mb-4">Let us know how you'd like to hear from us.</p>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="newsletter" checked>
+                        <label class="form-check-label" for="newsletter">
+                            Subscribe to our newsletter
+                        </label>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="marketing" checked>
+                        <label class="form-check-label" for="marketing">
+                            Receive marketing emails and offers
+                        </label>
+                    </div>
+
+                    <div class="form-check mb-3">
+                        <input class="form-check-input" type="checkbox" id="notifications">
+                        <label class="form-check-label" for="notifications">
+                            Receive product updates and notifications
+                        </label>
+                    </div>
+
+                    <div class="form-check mb-4">
+                        <input class="form-check-input" type="checkbox" id="onboarding" checked>
+                        <label class="form-check-label" for="onboarding">
+                            I want onboarding assistance
+                        </label>
+                    </div>
+                </div>
+
+                <!-- ========== STEP 7: REVIEW & SUBMIT ========== -->
+                <div id="step-review" class="wizard-step d-none">
+                    <h3 class="mb-4">Review Your Information</h3>
+
+                    <div id="review-content" class="review-section">
+                        <!-- User submitted content will be populated -->
+                    </div>
+
+                    <div class="alert alert-success mt-4" role="alert">
+                        Ready to submit? Click the "Submit" button below to complete registration.
+                    </div>
+                </div>
+
+                <!-- Navigation Buttons -->
+                <div class="d-flex justify-content-between mt-5 pt-4 border-top">
+                    <button id="btn-back" class="btn btn-secondary" disabled>
+                        ← Back
+                    </button>
+                    <button id="btn-next" class="btn btn-primary">
+                        Next →
+                    </button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

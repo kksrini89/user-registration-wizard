@@ -1,0 +1,321 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.wizard-card {
+    max-width: 700px;
+    margin: 0 auto;
+    border-radius: 10px;
+    border: none;
+}
+
+.card-body {
+    padding: 40px;
+}
+
+h1 {
+    color: #333;
+    font-weight: 600;
+    font-size: 28px;
+}
+
+h3 {
+    color: #444;
+    font-weight: 600;
+    font-size: 22px;
+    margin-bottom: 20px;
+}
+
+/* ========== Wizard Step ========== */
+
+.wizard-step {
+    animation: fadeIn 0.4s ease-in;
+}
+
+.wizard-step.d-none {
+    display: none !important;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ========== Form Controls ========== */
+
+.form-control,
+.form-select {
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    padding: 10px 12px;
+    font-size: 14px;
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+.form-label {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+/* ========== Progress Bar ========== */
+
+.progress {
+    background-color: #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    transition: width 0.5s ease;
+    background: linear-gradient(90deg, #28a745, #20c997);
+}
+
+/* ========== Buttons ========== */
+
+.btn {
+    padding: 10px 24px;
+    font-weight: 600;
+    border-radius: 6px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    border: none;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: linear-gradient(135deg, #5568d3, #6a3a8f);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background-color: #6c757d;
+    color: white;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background-color: #5a6268;
+    transform: translateY(-2px);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ========== Password Strength Check ========== */
+
+.strength-bar {
+    height: 6px;
+    background-color: #e9ecef;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.strength-meter {
+    height: 100%;
+    width: 0%;
+    transition: width 0.3s ease, background-color 0.3s ease;
+    border-radius: 3px;
+}
+
+.strength-meter.weak {
+    width: 33%;
+    background-color: #dc3545;
+}
+
+.strength-meter.good {
+    width: 66%;
+    background-color: #ffc107;
+}
+
+.strength-meter.strong {
+    width: 100%;
+    background-color: #28a745;
+}
+
+#strength-text {
+    font-weight: 600;
+    color: #667eea;
+}
+
+/* ========== US map ========== */
+
+#us-map {
+    margin-bottom: 20px;
+}
+
+.state-path {
+    fill: #d3d3d3;
+    stroke: #999;
+    stroke-width: 1;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.state-path:hover {
+    fill: #b3b3b3;
+    stroke-width: 2;
+}
+
+.state-path.selected {
+    fill: #28a745;
+    stroke: #1e7e34;
+    stroke-width: 2;
+}
+
+#map-container {
+    background-color: #f8f9fa;
+    border-radius: 6px;
+    padding: 15px;
+    border: 1px solid #e9ecef;
+}
+
+/* ========== Review Section ========== */
+
+.review-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.review-card {
+    background-color: #f8f9fa;
+    border-left: 4px solid #667eea;
+    padding: 15px;
+    border-radius: 6px;
+}
+
+.review-card h5 {
+    margin-bottom: 12px;
+    color: #333;
+    font-weight: 600;
+}
+
+.review-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid #e9ecef;
+    font-size: 14px;
+}
+
+.review-item:last-child {
+    border-bottom: none;
+}
+
+.review-label {
+    font-weight: 500;
+    color: #666;
+}
+
+.review-value {
+    color: #333;
+    font-weight: 600;
+}
+
+/* ========== Utility Classes ========== */
+
+.d-none {
+    display: none !important;
+}
+
+.text-muted {
+    color: #6c757d !important;
+}
+
+/* ========== Responsive ========== */
+
+@media (max-width: 576px) {
+    .card-body {
+        padding: 25px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    h3 {
+        font-size: 18px;
+    }
+
+    .btn {
+        padding: 8px 16px;
+        font-size: 13px;
+    }
+
+    .d-flex {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .d-flex > button {
+        width: 100%;
+    }
+}
+
+/* ========== Alerts ========== */
+
+.alert {
+    border-radius: 6px;
+    border: none;
+    font-size: 13px;
+}
+
+.alert-info {
+    background-color: #e7f3ff;
+    color: #004085;
+    border-left: 4px solid #667eea;
+}
+
+.alert-success {
+    background-color: #d4edda;
+    color: #155724;
+    border-left: 4px solid #28a745;
+}
+
+/* ========== Form Checks ========== */
+
+.form-check {
+    padding-left: 0;
+    margin-bottom: 12px;
+}
+
+.form-check-input {
+    margin-top: 3px;
+    cursor: pointer;
+    accent-color: #667eea;
+}
+
+.form-check-label {
+    cursor: pointer;
+    margin-left: 8px;
+    user-select: none;
+    color: #333;
+    font-size: 14px;
+}
