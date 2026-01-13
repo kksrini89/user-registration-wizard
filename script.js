@@ -7,6 +7,10 @@ const WIZARD_STEPS = [
     "step-preferences",
     "step-review"
 ];
+const STEP_CONFIG = {
+    business : { totalSteps: 7},
+    personal : { totalSteps: 6}
+};
 
 let currentStepIndex = 0;
 let wizardData = {
@@ -119,7 +123,7 @@ function getPreviousStepIndex(currentStepIndex, accountType) {
 }
 
 function getVisibleStepsCount(accountType) {
-    return accountType === 'business' ? 7 : 6;
+    return STEP_CONFIG[accountType]?.totalSteps || 7;
 }
 
 function getCurrentVisibleStepIndex(currentStepIndex, accountType) {
