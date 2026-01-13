@@ -13,6 +13,7 @@ let wizardData = {
     // Account Info
     email: "",
     username: "",
+    accountType: "",
     password: "",
     confirmPassword: "",
 
@@ -58,14 +59,16 @@ function updateUI() {
     document.getElementById(currentStepId).classList.remove("d-none");
 
     // 3. Update step counter
-    stepCounter.textContent = `Step ${currentStepIndex + 1}`;
+    const visibleStepIndex = getCurrentVisibleStepIndex(currentStepIndex, wizardData.accountType);
+    stepCounter.textContent = `Step ${visibleStepIndex}`;
 
     // 4. Update buttons
     btnBack.disabled = currentStepIndex === 0;
     btnNext.innerText = currentStepIndex === WIZARD_STEPS.length - 1 ? "Submit" : "Next →";
 
     // 5. Update progress bar
-    const progress = ((currentStepIndex + 1) / WIZARD_STEPS.length) * 100;
+    const totalVisibleSteps = getVisibleStepsCount(wizardData.accountType);
+    const progress = (visibleStepIndex / totalVisibleSteps) * 100;
     progressBar.style.width = `${progress}%`;
 
     // 6. If on review step, populate it
@@ -87,7 +90,7 @@ function goNext() {
 
     // If not on last step, move to next
     if (currentStepIndex < WIZARD_STEPS.length - 1) {
-        currentStepIndex++;
+        currentStepIndex = getNextStepIndex(currentStepIndex, wizardData.accountType);
         updateUI();
     } else {
         submitForm();
@@ -96,9 +99,38 @@ function goNext() {
 
 function goBack() {
     if (currentStepIndex > 0) {
-        currentStepIndex--;
+        currentStepIndex = getPreviousStepIndex(currentStepIndex, wizardData.accountType);
         updateUI();
     }
+}
+
+function getNextStepIndex(currentStepIndex, accountType) {
+    if(currentStepIndex === 2 && accountType === 'personal') {
+        return 4;
+    }
+    return currentStepIndex + 1;
+}
+
+function getPreviousStepIndex(currentStepIndex, accountType) {
+    if(currentStepIndex === 4 && accountType === 'personal') {
+        return 2;
+    }
+    return currentStepIndex - 1;
+}
+
+function getVisibleStepsCount(accountType) {
+    return accountType === 'business' ? 7 : 6;
+}
+
+function getCurrentVisibleStepIndex(currentStepIndex, accountType) {
+    // Calculate user-facing step number (1-based)
+    if (accountType === 'personal' && currentStepIndex > 3) {
+        return currentStepIndex;  // After skipping business, same as index
+    }
+    if (accountType === 'personal' && currentStepIndex === 3) {
+        return 3;  // Business step is skipped, so security shows as step 4
+    }
+    return currentStepIndex + 1;
 }
 
 function validateCurrentStep() {
@@ -127,6 +159,7 @@ function validateCurrentStep() {
 function validateAccountStep() {
     const email = document.getElementById("email").value.trim();
     const username = document.getElementById("username").value.trim();
+    const accountType = document.getElementById("account-type").value;
     const password = document.getElementById("password-step1").value;
     const confirmPassword = document.getElementById("confirm-password-step1").value;
 
@@ -142,6 +175,11 @@ function validateAccountStep() {
 
     if (!username) {
         alert("Please enter a username.");
+        return false;
+    }
+
+    if(!accountType) {
+        alert("Select an account type!");
         return false;
     }
 
@@ -259,6 +297,7 @@ function saveDataFromDOM() {
         case "step-account":
             wizardData.email = document.getElementById("email").value.trim();
             wizardData.username = document.getElementById("username").value.trim();
+            wizardData.accountType = document.getElementById("account-type").value;
             wizardData.password = document.getElementById("password-step1").value;
             wizardData.confirmPassword = document.getElementById("confirm-password-step1").value;
             break;
@@ -341,6 +380,12 @@ function checkPasswordStrength(password) {
     }
 }
 
+function handleAccountTypeChange(event) {
+    const accountType = event.target.value;
+    const totalVisibleSteps = getVisibleStepsCount(accountType);
+    totalSteps.textContent = totalVisibleSteps;
+}
+
 function handleMapClick(event) {
     if (!event.target.classList.contains("state-path")) {
         return;
@@ -408,7 +453,7 @@ function populateReviewStep() {
                 <span class="review-value">${wizardData.selectedState}</span>
             </div>
         </div>
-
+${wizardData.accountType === 'business' ? `
         <div class="review-card">
             <h5>Business Details</h5>
             <div class="review-item">
@@ -425,7 +470,7 @@ function populateReviewStep() {
                 <span class="review-value">${wizardData.hasOpsTeam ? "Yes" : "No"}</span>
             </div>
             ` : ""}
-        </div>
+        </div>` : "" }
 
         <div class="review-card">
             <h5>Communication Preferences</h5>
@@ -483,6 +528,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const usMap = document.getElementById("us-map");
     if (usMap) {
         usMap.addEventListener("click", handleMapClick);
+    }
+    
+    const accountTypeSelect = document.getElementById("account-type");
+    if (accountTypeSelect) {
+        accountTypeSelect.addEventListener("change", handleAccountTypeChange);
     }
 
     updateUI();
